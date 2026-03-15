@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 
 const demoImmersion = {
   scenario: "You walk into a cozy cafe in Madrid on a sunny afternoon. The barista greets you warmly.",
@@ -32,20 +32,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ success: true, result: demoImmersion });
     }
 
-    const client = new Anthropic({ apiKey });
+    const client = new OpenAI({ apiKey });
 
     const topicNote = topic ? ` The scenario should involve: ${topic}.` : "";
 
-    const msg = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
       max_tokens: 2048,
-      system: `You are LINGUA, an immersive language learning engine. Generate a realistic conversation scenario in ${targetLanguage} at the ${level} level. Include translations and vocabulary highlights.${topicNote} Respond with ONLY valid JSON: { "scenario": string, "dialogue": [{"speaker": string, "text": string, "translation": string}], "vocabulary": [{"word": string, "meaning": string, "context": string}] }`,
       messages: [
+        {
+          role: "system",
+          content: `You are LINGUA, an immersive language learning engine. Generate a realistic conversation scenario in ${targetLanguage} at the ${level} level. Include translations and vocabulary highlights.${topicNote} Respond with ONLY valid JSON: { "scenario": string, "dialogue": [{"speaker": string, "text": string, "translation": string}], "vocabulary": [{"word": string, "meaning": string, "context": string}] }`,
+        },
         {
           role: "user",
           content: `Generate an immersion exercise in ${targetLanguage} for a ${level} student.${topic ? ` Topic: ${topic}` : ""}`,
@@ -53,13 +56,13 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const content = msg.content[0];
-    if (content.type !== "text") {
+    const content = completion.choices[0]?.message?.content || '';
+    if (!content) {
       return NextResponse.json({ success: true, result: demoImmersion });
     }
 
     try {
-      const result = JSON.parse(content.text);
+      const result = JSON.parse(content);
       return NextResponse.json({ success: true, result });
     } catch {
       return NextResponse.json({ success: true, result: demoImmersion });

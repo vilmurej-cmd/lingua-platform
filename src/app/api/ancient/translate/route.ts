@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { demoAncientTranslation } from "@/lib/demo-translations";
 
 export async function POST(req: NextRequest) {
@@ -14,18 +14,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ success: true, result: demoAncientTranslation });
     }
 
-    const client = new Anthropic({ apiKey });
+    const client = new OpenAI({ apiKey });
 
-    const msg = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
       max_tokens: 2048,
-      system: `You are LINGUA, an ancient language translation engine. Translate ancient text with historical accuracy. Provide modern translation, historical context, linguistic notes on grammar features, and cultural significance. Note uncertainty where it exists. Respond with ONLY valid JSON: { "translation": string, "historicalContext": string, "linguisticNotes": string, "culturalSignificance": string, "confidenceLevel": string, "alternativeReadings": [string] | null }`,
       messages: [
+        {
+          role: "system",
+          content: `You are LINGUA, an ancient language translation engine. Translate ancient text with historical accuracy. Provide modern translation, historical context, linguistic notes on grammar features, and cultural significance. Note uncertainty where it exists. Respond with ONLY valid JSON: { "translation": string, "historicalContext": string, "linguisticNotes": string, "culturalSignificance": string, "confidenceLevel": string, "alternativeReadings": [string] | null }`,
+        },
         {
           role: "user",
           content: `Translate the following ${language} text with full historical and linguistic analysis:\n\n"${text}"`,
@@ -33,13 +36,13 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const content = msg.content[0];
-    if (content.type !== "text") {
+    const content = completion.choices[0]?.message?.content || '';
+    if (!content) {
       return NextResponse.json({ success: true, result: demoAncientTranslation });
     }
 
     try {
-      const result = JSON.parse(content.text);
+      const result = JSON.parse(content);
       return NextResponse.json({ success: true, result });
     } catch {
       return NextResponse.json({ success: true, result: demoAncientTranslation });

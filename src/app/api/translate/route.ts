@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { demoTranslation } from "@/lib/demo-translations";
 
 export async function POST(req: NextRequest) {
@@ -14,12 +14,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ success: true, result: demoTranslation });
     }
 
-    const client = new Anthropic({ apiKey });
+    const client = new OpenAI({ apiKey });
 
     const optionsNote = [
       showEmotion !== false ? "Include emotional annotations." : "",
@@ -29,11 +29,14 @@ export async function POST(req: NextRequest) {
       .filter(Boolean)
       .join(" ");
 
-    const message = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
       max_tokens: 2048,
-      system: `You are LINGUA, a universal understanding engine. Translate with emotional fidelity: preserve tone, warmth, urgency, humor. Include cultural context for nuances. Flag when literal translation misses intent. For idioms, provide cultural equivalent. Respect cultural sensitivities. For medical/legal content, prioritize precision. Respond with ONLY valid JSON: { "translation": string, "emotionalAnnotations": [{"text": string, "emotion": string, "color": string}], "culturalNotes": [{"context": string, "importance": string}], "intentNote": string, "alternatives": [string], "untranslatableNote": string, "pronunciation": string, "formality": string }`,
       messages: [
+        {
+          role: "system",
+          content: `You are LINGUA, a universal understanding engine. Translate with emotional fidelity: preserve tone, warmth, urgency, humor. Include cultural context for nuances. Flag when literal translation misses intent. For idioms, provide cultural equivalent. Respect cultural sensitivities. For medical/legal content, prioritize precision. Respond with ONLY valid JSON: { "translation": string, "emotionalAnnotations": [{"text": string, "emotion": string, "color": string}], "culturalNotes": [{"context": string, "importance": string}], "intentNote": string, "alternatives": [string], "untranslatableNote": string, "pronunciation": string, "formality": string }`,
+        },
         {
           role: "user",
           content: `Translate the following from ${sourceLang} to ${targetLang}. ${optionsNote}\n\nText: "${text}"`,
@@ -41,13 +44,13 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const content = message.content[0];
-    if (content.type !== "text") {
+    const content = completion.choices[0]?.message?.content || '';
+    if (!content) {
       return NextResponse.json({ success: true, result: demoTranslation });
     }
 
     try {
-      const result = JSON.parse(content.text);
+      const result = JSON.parse(content);
       return NextResponse.json({ success: true, result });
     } catch {
       return NextResponse.json({ success: true, result: demoTranslation });

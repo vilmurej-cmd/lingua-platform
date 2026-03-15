@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "Home",
+    "translate": "Translate",
+    "conversation": "Conversation",
+    "sign": "Sign Language",
+    "learn": "Learn",
+    "ancient": "Ancient Languages",
+    "health": "Medical",
+    "sight": "Visual Languages",
+    "hardware": "Hardware",
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "hero": {
+    "title": "Every Voice Deserves To Be Understood",
+    "subtitle": "Not just heard. Understood. The words, the emotion, the meaning. In every language. For every person.",
+    "cta": "Start Understanding"
+  },
+  "translate": {
+    "inputLabel": "Type, speak, or paste anything...",
+    "outputLabel": "Translation",
+    "emotionalFidelity": "Show emotional fidelity",
+    "culturalContext": "Show cultural context",
+    "intentAnalysis": "Show intent analysis",
+    "listen": "Listen",
+    "copy": "Copy",
+    "swap": "Swap languages"
+  },
+  "common": {
+    "loading": "Translating...",
+    "close": "Close",
+    "back": "Back",
+    "search": "Search"
+  },
+  "footer": {
+    "mission": "No voice goes unheard. No dream goes unrealized. No being goes forgotten.",
+    "company": "A Vilmure Ventures Company"
+  },
+  "language": {
+    "searchLanguages": "Search languages...",
+    "recentlyUsed": "Recently Used",
+    "popular": "Popular Languages",
+    "allLanguages": "All Languages"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "\u9996\u9875",
+    "translate": "\u7ffb\u8bd1",
+    "conversation": "\u5bf9\u8bdd",
+    "sign": "\u624b\u8bed",
+    "learn": "\u5b66\u4e60",
+    "ancient": "\u53e4\u4ee3\u8bed\u8a00",
+    "health": "\u533b\u7597",
+    "sight": "\u89c6\u89c9\u8bed\u8a00",
+    "hardware": "\u786c\u4ef6",
+    "about": "\u5173\u4e8e",
+    "privacy": "\u9690\u79c1\u653f\u7b56",
+    "terms": "\u670d\u52a1\u6761\u6b3e"
+  },
+  "hero": {
+    "title": "\u6bcf\u4e00\u4e2a\u58f0\u97f3\u90fd\u503c\u5f97\u88ab\u7406\u89e3",
+    "subtitle": "\u4e0d\u4ec5\u4ec5\u662f\u88ab\u542c\u5230\u3002\u800c\u662f\u88ab\u7406\u89e3\u3002\u8bcd\u8bed\u3001\u60c5\u611f\u3001\u542b\u4e49\u3002\u6bcf\u4e00\u79cd\u8bed\u8a00\u3002\u6bcf\u4e00\u4e2a\u4eba\u3002",
+    "cta": "\u5f00\u59cb\u7406\u89e3"
+  },
+  "translate": {
+    "inputLabel": "\u8f93\u5165\u3001\u8bf4\u8bdd\u6216\u7c98\u8d34\u4efb\u4f55\u5185\u5bb9...",
+    "outputLabel": "\u7ffb\u8bd1\u7ed3\u679c",
+    "emotionalFidelity": "\u663e\u793a\u60c5\u611f\u4fdd\u771f\u5ea6",
+    "culturalContext": "\u663e\u793a\u6587\u5316\u80cc\u666f",
+    "intentAnalysis": "\u663e\u793a\u610f\u56fe\u5206\u6790",
+    "listen": "\u6536\u542c",
+    "copy": "\u590d\u5236",
+    "swap": "\u4ea4\u6362\u8bed\u8a00"
+  },
+  "common": {
+    "loading": "\u7ffb\u8bd1\u4e2d...",
+    "close": "\u5173\u95ed",
+    "back": "\u8fd4\u56de",
+    "search": "\u641c\u7d22"
+  },
+  "footer": {
+    "mission": "\u6ca1\u6709\u58f0\u97f3\u88ab\u5ffd\u89c6\u3002\u6ca1\u6709\u68a6\u60f3\u65e0\u6cd5\u5b9e\u73b0\u3002\u6ca1\u6709\u751f\u547d\u88ab\u9057\u5fd8\u3002",
+    "company": "Vilmure Ventures \u65d7\u4e0b\u516c\u53f8"
+  },
+  "language": {
+    "searchLanguages": "\u641c\u7d22\u8bed\u8a00...",
+    "recentlyUsed": "\u6700\u8fd1\u4f7f\u7528",
+    "popular": "\u70ed\u95e8\u8bed\u8a00",
+    "allLanguages": "\u6240\u6709\u8bed\u8a00"
+  }
+}

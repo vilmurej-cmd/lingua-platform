@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { demoResurrection } from "@/lib/demo-translations";
 
 export async function POST(req: NextRequest) {
@@ -21,12 +21,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ success: true, result: demoResurrection });
     }
 
-    const client = new Anthropic({ apiKey });
+    const client = new OpenAI({ apiKey });
 
     let systemPrompt: string;
     let userContent: string;
@@ -42,11 +42,14 @@ export async function POST(req: NextRequest) {
       userContent = userMessage || `Greet me in ${language} and tell me about your daily life.`;
     }
 
-    const msg = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
       max_tokens: 1536,
-      system: `${systemPrompt} ${responseFormat}`,
       messages: [
+        {
+          role: "system",
+          content: `${systemPrompt} ${responseFormat}`,
+        },
         {
           role: "user",
           content: userContent,
@@ -54,13 +57,13 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const content = msg.content[0];
-    if (content.type !== "text") {
+    const content = completion.choices[0]?.message?.content || '';
+    if (!content) {
       return NextResponse.json({ success: true, result: demoResurrection });
     }
 
     try {
-      const result = JSON.parse(content.text);
+      const result = JSON.parse(content);
       return NextResponse.json({ success: true, result });
     } catch {
       return NextResponse.json({ success: true, result: demoResurrection });

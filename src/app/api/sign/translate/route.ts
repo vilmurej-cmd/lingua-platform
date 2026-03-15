@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { demoSignTranslation } from "@/lib/demo-translations";
 
 export async function POST(req: NextRequest) {
@@ -14,18 +14,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ success: true, result: demoSignTranslation });
     }
 
-    const client = new Anthropic({ apiKey });
+    const client = new OpenAI({ apiKey });
 
-    const msg = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
       max_tokens: 2048,
-      system: `You are LINGUA, a sign language translation engine. Convert text into sign language instructions. Sign languages have their own grammar — this is NOT word-for-word translation. Provide culturally appropriate rendering. Include handshape, movement, location, facial expression for each sign. Respond with ONLY valid JSON: { "signs": [{"word": string, "handshape": string, "movement": string, "location": string, "facialExpression": string, "culturalNote": string | null}], "grammarNote": string }`,
       messages: [
+        {
+          role: "system",
+          content: `You are LINGUA, a sign language translation engine. Convert text into sign language instructions. Sign languages have their own grammar — this is NOT word-for-word translation. Provide culturally appropriate rendering. Include handshape, movement, location, facial expression for each sign. Respond with ONLY valid JSON: { "signs": [{"word": string, "handshape": string, "movement": string, "location": string, "facialExpression": string, "culturalNote": string | null}], "grammarNote": string }`,
+        },
         {
           role: "user",
           content: `Convert the following text into ${signLanguage} sign language instructions:\n\n"${text}"`,
@@ -33,13 +36,13 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const content = msg.content[0];
-    if (content.type !== "text") {
+    const content = completion.choices[0]?.message?.content || '';
+    if (!content) {
       return NextResponse.json({ success: true, result: demoSignTranslation });
     }
 
     try {
-      const result = JSON.parse(content.text);
+      const result = JSON.parse(content);
       return NextResponse.json({ success: true, result });
     } catch {
       return NextResponse.json({ success: true, result: demoSignTranslation });

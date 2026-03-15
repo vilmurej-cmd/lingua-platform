@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "translate": "Traducir",
+    "conversation": "Conversacion",
+    "sign": "Lengua de Senas",
+    "learn": "Aprender",
+    "ancient": "Lenguas Antiguas",
+    "health": "Medico",
+    "sight": "Lenguajes Visuales",
+    "hardware": "Hardware",
+    "about": "Acerca de",
+    "privacy": "Privacidad",
+    "terms": "Terminos"
+  },
+  "hero": {
+    "title": "Cada Voz Merece Ser Comprendida",
+    "subtitle": "No solo escuchada. Comprendida. Las palabras, la emocion, el significado. En cada idioma. Para cada persona.",
+    "cta": "Comenzar a Comprender"
+  },
+  "translate": {
+    "inputLabel": "Escribe, habla o pega cualquier cosa...",
+    "outputLabel": "Traduccion",
+    "emotionalFidelity": "Mostrar fidelidad emocional",
+    "culturalContext": "Mostrar contexto cultural",
+    "intentAnalysis": "Mostrar analisis de intencion",
+    "listen": "Escuchar",
+    "copy": "Copiar",
+    "swap": "Intercambiar idiomas"
+  },
+  "common": {
+    "loading": "Traduciendo...",
+    "close": "Cerrar",
+    "back": "Volver",
+    "search": "Buscar"
+  },
+  "footer": {
+    "mission": "Ninguna voz pasa desapercibida. Ningun sueno queda sin realizar. Ningun ser queda olvidado.",
+    "company": "Una Empresa de Vilmure Ventures"
+  },
+  "language": {
+    "searchLanguages": "Buscar idiomas...",
+    "recentlyUsed": "Usados Recientemente",
+    "popular": "Idiomas Populares",
+    "allLanguages": "Todos los Idiomas"
+  }
+}

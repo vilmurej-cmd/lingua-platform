@@ -168,12 +168,12 @@ export default function AboutPage() {
             </div>
             <div className="bg-white rounded-2xl border border-lingua-border-light shadow-sm p-8 text-center">
               <div className="w-20 h-20 rounded-full bg-lingua-violet/10 flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl font-serif font-bold text-lingua-violet">C</span>
+                <span className="text-3xl font-serif font-bold text-lingua-violet">G</span>
               </div>
-              <h3 className="font-serif text-xl font-bold text-text-primary">Claude</h3>
+              <h3 className="font-serif text-xl font-bold text-text-primary">GPT</h3>
               <p className="text-sm text-lingua-violet font-medium mb-3">AI Partner</p>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Anthropic&apos;s AI assistant. Responsible for architecture, code,
+                OpenAI&apos;s AI assistant. Responsible for architecture, code,
                 content, and the conviction that every technical decision should
                 serve the humans who need it most.
               </p>
