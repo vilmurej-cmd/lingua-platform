@@ -80,7 +80,7 @@ export default function InscriptionsPage() {
       const res = await fetch('/api/sight/decode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: inputText, mode: 'inscription' }),
+        body: JSON.stringify({ description: inputText, scriptType: 'inscription' }),
       });
       if (!res.ok) throw new Error('Failed');
       const data = await res.json();

@@ -41,18 +41,33 @@ export default function TranslatePage() {
             text,
             sourceLang,
             targetLang,
-            options: {
-              ...options,
-              showEmotional,
-              showCultural,
-              showIntent,
-            },
+            showEmotion: showEmotional,
+            showCulture: showCultural,
+            showIntent,
+            ...options,
           }),
         });
 
         if (!res.ok) throw new Error('Translation failed');
 
-        const data: TranslationResult = await res.json();
+        const raw = await res.json();
+        const r = raw.result || raw;
+        const data: TranslationResult = {
+          translatedText: r.translatedText || r.translation || '',
+          annotations: (r.emotionalAnnotations || r.annotations || []).map(
+            (a: Record<string, string>) => ({
+              text: a.phrase || a.text || '',
+              emotion: a.emotion || '',
+              color: a.color || (a.emotion === 'warm' ? '#F59E0B' : a.emotion === 'joyful' ? '#10B981' : '#8B5CF6'),
+            })
+          ),
+          culturalContext: Array.isArray(r.culturalNotes)
+            ? r.culturalNotes.map((n: string | { context: string }) => typeof n === 'string' ? n : n.context).join(' ')
+            : r.culturalContext || '',
+          culturalImportance: r.culturalImportance || 'medium',
+          intentNote: r.intent || r.intentNote || null,
+          literal: r.literal || undefined,
+        };
         setResult(data);
       } catch {
         setResult({
